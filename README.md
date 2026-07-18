@@ -1,6 +1,6 @@
 # express-tee
 
-[![Node.js CI](https://github.com/kawanet/express-tee/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/kawanet/express-tee/actions/)
+[![Node.js CI](https://github.com/kawanet/express-tee/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/kawanet/express-tee/actions/)
 [![npm version](https://img.shields.io/npm/v/express-tee)](https://www.npmjs.com/package/express-tee)
 
 T-splitter to mirror Express.js response
@@ -29,7 +29,7 @@ app.listen(3000);
 ```
 
 See TypeScript declaration
-[express-tee.d.ts](https://github.com/kawanet/express-tee/blob/master/types/express-tee.d.ts)
+[express-tee.d.ts](https://github.com/kawanet/express-tee/blob/main/types/express-tee.d.ts)
 for more detail.
 
 ## SEE ALSO
