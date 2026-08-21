@@ -8,13 +8,13 @@ import {promises as fs} from "node:fs"
 type TeeOptions = types.TeeOptions
 type tee = typeof types.tee
 
-const defaults: TeeOptions = {
+const defaults = {
     // Exclude the HEAD method by default.
     method: /^(?!HEAD)/,
 
     // Cache OK responses only by default.
     statusCode: /^(200)$/,
-}
+} satisfies TeeOptions
 
 const pseudoHEAD = requestHandler()
     .for(req => req.method === "HEAD") // only for HEAD
@@ -24,11 +24,11 @@ const pseudoHEAD = requestHandler()
     )
 
 export const tee: tee = (root, options) => {
-    if (!options) options = {} as types.TeeOptions
+    const opts: TeeOptions = options ?? {}
 
-    const method = options.method || defaults.method
+    const method = opts.method || defaults.method
 
-    const statusCode = options.statusCode || defaults.statusCode
+    const statusCode = opts.statusCode || defaults.statusCode
 
     // trailing slash
     root = root.replace(/\/+$/, "")
@@ -37,7 +37,9 @@ export const tee: tee = (root, options) => {
         .for(req => method.test(req.method))
         .use(
             pseudoHEAD,
-            responseHandler().getBuffer(teeToFile),
+            // getBuffer declares req/res optional for callers that ignore
+            // them, but this handler only runs inside a response cycle.
+            responseHandler().getBuffer((data, req, res) => teeToFile(data, req!, res!)),
         )
 
     async function teeToFile(data: Buffer, req: Request, res: Response) {
@@ -49,7 +51,7 @@ export const tee: tee = (root, options) => {
 
         // file path
         const path = getPath()
-        if (options.logger) options.logger.log(path)
+        if (opts.logger) opts.logger.log(path)
 
         // prepare directory
         const dir = path.replace(/[^\/]+$/, "")
