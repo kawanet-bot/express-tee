@@ -23,12 +23,12 @@ const pseudoHEAD = requestHandler()
         responseHandler().getRequest(req => req.method = "HEAD"), // revert to HEAD
     )
 
-export const tee: tee = (root, options) => {
-    const opts: TeeOptions = options ?? {}
+export const tee: tee = (root, _options) => {
+    const options: TeeOptions = _options ?? {}
 
-    const method = opts.method || defaults.method
+    const method = options.method || defaults.method
 
-    const statusCode = opts.statusCode || defaults.statusCode
+    const statusCode = options.statusCode || defaults.statusCode
 
     // trailing slash
     root = root.replace(/\/+$/, "")
@@ -51,7 +51,7 @@ export const tee: tee = (root, options) => {
 
         // file path
         const path = getPath()
-        if (opts.logger) opts.logger.log(path)
+        if (options.logger) options.logger.log(path)
 
         // prepare directory
         const dir = path.replace(/[^\/]+$/, "")
