@@ -23,9 +23,7 @@ const pseudoHEAD = requestHandler()
         responseHandler().getRequest(req => req.method = "HEAD"), // revert to HEAD
     )
 
-export const tee: tee = (root, _options) => {
-    const options: TeeOptions = _options ?? {}
-
+export const tee: tee = (root, options = {}) => {
     const method = options.method || defaults.method
 
     const statusCode = options.statusCode || defaults.statusCode
